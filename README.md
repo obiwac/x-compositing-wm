@@ -29,6 +29,14 @@ You can then set this to run automatically when you run `startx` by adding somet
 exec x-compositing-wm
 ```
 
+## Features
+
+- Basic window interaction.
+- Basic graphical effects (shadows, rounded corners).
+- Basic.
+- Basic animations (smoothing when moving/resizing windows, animations when creating windows, &c).
+- Basic EWMH compliance (so it can work with programs like OBS).
+
 ## Default keybindings
 
 - Super+Left click and drag: Move window.
