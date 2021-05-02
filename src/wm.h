@@ -203,9 +203,16 @@ void new_wm(wm_t* wm) {
 	wm->height = attributes.height;
 
 	// tell X to send us all 'CreateNotify', 'ConfigureNotify', and 'DestroyNotify' events ('SubstructureNotifyMask' also sends back some other events but we're not using those)
-	// TODO explain pointer motion too
 
 	XSelectInput(wm->display, wm->root_window, SubstructureNotifyMask | PointerMotionMask | ButtonMotionMask | ButtonPressMask | ButtonReleaseMask);
+
+	XGrabKey(wm->wm.display, XKeysymToKeycode(wm->wm.display, XStringToKeysym("F1")), Mod4Mask, wm->wm.root_window, 0, GrabModeAsync, GrabModeAsync);
+	XGrabKey(wm->wm.display, XKeysymToKeycode(wm->wm.display, XStringToKeysym("q")), Mod4Mask, wm->wm.root_window, 0, GrabModeAsync, GrabModeAsync);
+	XGrabKey(wm->wm.display, XKeysymToKeycode(wm->wm.display, XStringToKeysym("f")), Mod4Mask | Mod1Mask, wm->wm.root_window, 0, GrabModeAsync, GrabModeAsync);
+	XGrabKey(wm->wm.display, XKeysymToKeycode(wm->wm.display, XStringToKeysym("f")), Mod4Mask, wm->wm.root_window, 0, GrabModeAsync, GrabModeAsync);
+	XGrabKey(wm->wm.display, XKeysymToKeycode(wm->wm.display, XStringToKeysym("t")), Mod4Mask, wm->wm.root_window, 0, GrabModeAsync, GrabModeAsync);
+	XGrabKey(wm->wm.display, XKeysymToKeycode(wm->wm.display, XStringToKeysym("v")), Mod4Mask, wm->wm.root_window, 0, GrabModeAsync, GrabModeAsync);
+	XGrabKey(wm->wm.display, XKeysymToKeycode(wm->wm.display, XStringToKeysym("r")), Mod4Mask, wm->wm.root_window, 0, GrabModeAsync, GrabModeAsync);
 
 	// setup our atoms (explained in more detail in the 'wm_t' struct)
 	// we also need to specify which atoms are supported in '_NET_SUPPORTED'

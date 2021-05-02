@@ -12,6 +12,23 @@ This was also originally meant as a prototype to AQUA's `wm.*` devices, so some 
 
 I may or may not end up updating this with these features, but I welcome any pull requests you might have!
 
+## Compiling and installing
+
+On Linux or *BSD or whatever, compile with:
+
+```sh
+$ cc -I/usr/local/include -L/usr/local/lib -lX11 -lGL -lGLEW -lXcomposite -lXfixes -lXinerama -lm src/main.c -o x-compositing-wm
+```
+
+This creates an `x-compositing-wm` executable which you can put anywhere really (like `/usr/local/bin/` or `~/.local/bin/` or whatever).
+You can then set this to run automatically when you run `startx` by adding something like this to the end of your `~/.xinitrc`:
+
+```sh
+exec x-compositing-wm
+```
+
+## Default keybindings
+
 
 
 ## List of things you'll want to add in your own compositing WM
@@ -20,5 +37,6 @@ I may or may not end up updating this with these features, but I welcome any pul
 - A fallback for when modern OpenGL (3.3) is not available.
 - Probably use `XDamage` to not needlessly update regions of the screen that don't need updating, although TBH I'm not sure if these days it's really a big deal.
 - Freeing allocated memory correctly.
-- Capturing focus events so clients can ask for focus.
+- Capturing focus events so clients can ask for focus (necessary for dropdowns to work properly, which are their own separate windows most of the time).
 - Apparently it's better performance-wise to use XCB instead of Xlib these days. You may wanna look into that.
+- Make resizing windows not dumb.
