@@ -510,5 +510,5 @@ int wm_process_events(wm_t* wm, void* thing) {
 	}
 
 done:
-	return events_left - 1;
+	return events_left;
 }

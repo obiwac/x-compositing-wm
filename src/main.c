@@ -122,8 +122,6 @@ static unsigned window_internal_id_to_index(my_wm_t* wm, unsigned internal_id) {
 }
 
 static void print_window_stack(my_wm_t* wm) { // debugging function
-	return;
-
 	printf("Window stack (%d windows):\n", wm->window_count);
 
 	for (int i = 0; i < wm->window_count; i++) {
@@ -727,27 +725,3 @@ int main(int argc, char* argv[]) {
 		// printf("average fps %f\n", 1 / average_delta);
 	}
 }
-
-// // static const GLubyte indices[] = { 0, 1, 2,  1, 2, 3,  2, 3, 4,  3, 4, 5,  4, 5, 6,  3, 7, 5,  4, 6, 8,  3, 7, 9,  4, 8, 10,  9, 3, 11,  10, 4, 12 };
-
-// // static const GLfloat vertex_positions[] = {
-// // 	0.5, 1.0,
-	
-// // 	0.3, 0.8,
-// // 	0.7, 0.8,
-
-// // 	0.3, 0.4,
-// // 	0.7, 0.4,
-
-// // 	0.15, 0.0,
-// // 	0.85, 0.0,
-
-// // 	0.0, 0.15,
-// // 	1.0, 0.15,
-
-// // 	0.0, 0.3,
-// // 	1.0, 0.3,
-
-// // 	0.15, 0.45,
-// // 	0.85, 0.45,
-// // };

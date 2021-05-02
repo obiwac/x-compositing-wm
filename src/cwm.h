@@ -166,10 +166,10 @@ void new_cwm(cwm_t* cwm, wm_t* wm) {
 	// enable adaptive vsync (-1 for adaptive vsync, 1 for non-adaptive vsync, 0 for no vsync)
 	// this extension seems completely broken on NVIDIA
 
-	cwm->vsync = 1;
-
 	// glXSwapIntervalEXT_t glXSwapIntervalEXT = (glXSwapIntervalEXT_t) glXGetProcAddress((const GLubyte*) "glXSwapIntervalEXT");
 	// glXSwapIntervalEXT(wm->display, cwm->output_window, 0);
+
+	cwm->vsync = 1;
 
 	// blacklist the overlay and output windows for events
 
