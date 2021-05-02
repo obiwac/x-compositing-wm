@@ -29,7 +29,14 @@ exec x-compositing-wm
 
 ## Default keybindings
 
-
+- Super+Left click and drag: Move window.
+- Super+Right click and drag: Resize window.
+- Super+F1: Quit WM.
+- Super+F: Make window fullscreen.
+- Super+Alt+F: Make window fullfullscreen.
+- Super+V: Enable or disable vsync (GIMP doesn't work with vsync for reasons I haven't had time to investigate).
+- Super+R: Restart WM.
+- Super+T: Open xterm instance.
 
 ## List of things you'll want to add in your own compositing WM
 
