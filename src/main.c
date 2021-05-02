@@ -1,8 +1,8 @@
 
 #define DEBUGGING 1
-#include "cwm.h"
+#include <cwm.h>
 
-#include "opengl.h"
+#include <opengl.h>
 
 #include <math.h>
 #include <unistd.h>

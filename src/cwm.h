@@ -1,6 +1,6 @@
 // this file contains helpers for the compositing part of the window manager prototype
 
-#include "wm.h"
+#include <wm.h>
 
 #include <X11/extensions/Xcomposite.h>
 

@@ -206,13 +206,13 @@ void new_wm(wm_t* wm) {
 
 	XSelectInput(wm->display, wm->root_window, SubstructureNotifyMask | PointerMotionMask | ButtonMotionMask | ButtonPressMask | ButtonReleaseMask);
 
-	XGrabKey(wm->wm.display, XKeysymToKeycode(wm->wm.display, XStringToKeysym("F1")), Mod4Mask, wm->wm.root_window, 0, GrabModeAsync, GrabModeAsync);
-	XGrabKey(wm->wm.display, XKeysymToKeycode(wm->wm.display, XStringToKeysym("q")), Mod4Mask, wm->wm.root_window, 0, GrabModeAsync, GrabModeAsync);
-	XGrabKey(wm->wm.display, XKeysymToKeycode(wm->wm.display, XStringToKeysym("f")), Mod4Mask | Mod1Mask, wm->wm.root_window, 0, GrabModeAsync, GrabModeAsync);
-	XGrabKey(wm->wm.display, XKeysymToKeycode(wm->wm.display, XStringToKeysym("f")), Mod4Mask, wm->wm.root_window, 0, GrabModeAsync, GrabModeAsync);
-	XGrabKey(wm->wm.display, XKeysymToKeycode(wm->wm.display, XStringToKeysym("t")), Mod4Mask, wm->wm.root_window, 0, GrabModeAsync, GrabModeAsync);
-	XGrabKey(wm->wm.display, XKeysymToKeycode(wm->wm.display, XStringToKeysym("v")), Mod4Mask, wm->wm.root_window, 0, GrabModeAsync, GrabModeAsync);
-	XGrabKey(wm->wm.display, XKeysymToKeycode(wm->wm.display, XStringToKeysym("r")), Mod4Mask, wm->wm.root_window, 0, GrabModeAsync, GrabModeAsync);
+	XGrabKey(wm->display, XKeysymToKeycode(wm->display, XStringToKeysym("F1")), Mod4Mask, wm->root_window, 0, GrabModeAsync, GrabModeAsync);
+	XGrabKey(wm->display, XKeysymToKeycode(wm->display, XStringToKeysym("q")), Mod4Mask, wm->root_window, 0, GrabModeAsync, GrabModeAsync);
+	XGrabKey(wm->display, XKeysymToKeycode(wm->display, XStringToKeysym("f")), Mod4Mask | Mod1Mask, wm->root_window, 0, GrabModeAsync, GrabModeAsync);
+	XGrabKey(wm->display, XKeysymToKeycode(wm->display, XStringToKeysym("f")), Mod4Mask, wm->root_window, 0, GrabModeAsync, GrabModeAsync);
+	XGrabKey(wm->display, XKeysymToKeycode(wm->display, XStringToKeysym("t")), Mod4Mask, wm->root_window, 0, GrabModeAsync, GrabModeAsync);
+	XGrabKey(wm->display, XKeysymToKeycode(wm->display, XStringToKeysym("v")), Mod4Mask, wm->root_window, 0, GrabModeAsync, GrabModeAsync);
+	XGrabKey(wm->display, XKeysymToKeycode(wm->display, XStringToKeysym("r")), Mod4Mask, wm->root_window, 0, GrabModeAsync, GrabModeAsync);
 
 	// setup our atoms (explained in more detail in the 'wm_t' struct)
 	// we also need to specify which atoms are supported in '_NET_SUPPORTED'
