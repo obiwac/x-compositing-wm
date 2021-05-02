@@ -2,6 +2,8 @@
 
 Extremely basic X11 compositing window manager written in C with Xlib and OpenGL.
 
+![alt text](pics/screenshot1.png "Screenshot 1")
+
 ## Disclaimer
 
 This is very much *not* intended for use, but merely as a tool to (hopefully) help understand how to write an X11 compositing window manager better than what the quite frankly pisspoor documentation provides.
