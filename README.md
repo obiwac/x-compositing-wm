@@ -12,7 +12,7 @@ It's also worth noting that I'm in no way shape or form an expert on X, this was
 
 This was also originally meant as a prototype to AQUA's `wm.*` devices, so some coding decisions and comments may seem a bit strange.
 
-I may or may not end up updating this with these features, but I welcome any pull requests you might have!
+I may or may not end up updating this with new features, but I welcome any pull requests you might have!
 
 ## Compiling and installing
 
