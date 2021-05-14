@@ -9,13 +9,15 @@ static void gl_compile_shader_and_check_for_errors /* lmao */ (GLuint shader, co
 	GLint log_length;
 	glGetShaderiv(shader, GL_INFO_LOG_LENGTH, &log_length);
 
-	char* log_buffer;
+	char* log_buffer = (char*) malloc(log_length); // 'log_length' includes null character
 	glGetShaderInfoLog(shader, log_length, NULL, log_buffer);
 
 	if (log_length) {
 		fprintf(stderr, "[SHADER_ERROR] %s\n", log_buffer);
-		exit(1);
+		exit(1); // no real need to free 'log_buffer' here
 	}
+
+	free(log_buffer);
 }
 
 GLuint gl_create_shader_program(const char* vertex_source, const char* fragment_source) {
