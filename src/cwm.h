@@ -93,7 +93,8 @@ void new_cwm(cwm_t* cwm, wm_t* wm) {
 
 	/* const */ int default_visual_attributes[] = {
 		GLX_RGBA, GLX_DOUBLEBUFFER,
-//		GLX_SAMPLE_BUFFERS, 1,
+		GLX_SAMPLE_BUFFERS, 1,
+		GLX_SAMPLES, 4,
 		GLX_RED_SIZE, 8,
 		GLX_GREEN_SIZE, 8,
 		GLX_BLUE_SIZE, 8,

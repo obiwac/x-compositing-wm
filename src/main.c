@@ -508,7 +508,7 @@ static void render_window(my_wm_t* wm, unsigned window_id, float delta) {
 
 	glUseProgram(wm->shadow_shader);
 
-	float shadow_opacity = 0.5 + 0.3 * (window_id == wm->focused_window_id);
+	float shadow_opacity = 0.2 + 0.1 * (window_id == wm->focused_window_id);
 
 	// TODO do I really want to disable shadows on maximized windows?
 
@@ -522,7 +522,7 @@ static void render_window(my_wm_t* wm, unsigned window_id, float delta) {
 
 	glUniform1f(wm->shadow_strength_uniform, window->visual_opacity * window->visual_shadow_opacity);
 
-	float shadow_radius = (float) (96 + (32 * (window_id == wm->focused_window_id))); // pixels
+	float shadow_radius = (float) (64 + (64 * (window_id == wm->focused_window_id))); // pixels
 	window->visual_shadow_radius += (shadow_radius - window->visual_shadow_radius) * delta * 20;
 
 	float spread_x = 4 * window->visual_shadow_radius / wm->x_resolution;
@@ -671,8 +671,8 @@ int main(int argc, char* argv[]) {
 
 		// find distance from point on shadow plane to window bounds
 
-		"	float dx = (2 * abs(map_position.x) - size.x + spread.x / 2) / spread.x;"
-		"	float dy = (2 * abs(map_position.y) - size.y + spread.y / 2) / spread.y;"
+		"	float dx = (2 * abs(map_position.x) - size.x + spread.x / 8) / spread.x;"
+		"	float dy = (2 * abs(map_position.y) - size.y + spread.y / 8) / spread.y;"
 
 		"	dx = clamp(dx, 0, 1);"
 		"	dy = clamp(dy, 0, 1);"
