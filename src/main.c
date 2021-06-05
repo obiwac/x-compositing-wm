@@ -508,7 +508,7 @@ static void render_window(my_wm_t* wm, unsigned window_id, float delta) {
 
 	glUseProgram(wm->shadow_shader);
 
-	float shadow_opacity = 0.2 + 0.1 * (window_id == wm->focused_window_id);
+	float shadow_opacity = 0.15 + 0.1 * (window_id == wm->focused_window_id);
 
 	// TODO do I really want to disable shadows on maximized windows?
 
