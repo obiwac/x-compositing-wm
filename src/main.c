@@ -233,7 +233,7 @@ static char* first_argument;
 void keyboard_event(my_wm_t* wm, unsigned internal_id, unsigned press, unsigned modifiers, unsigned key) {
 	int alt   = modifiers & 0x8;
 	int super = modifiers & 0x40;
-
+	
 	if (press && super &&         key == 67) wm->running = 0; // Super+F1
 	if (press && super &&         key == 24) wm_close_window(&wm->wm, wm->windows[wm->focused_window_id].internal_id); // Super+Q (quit)
 	if (press && super &&  alt && key == 41) maximize_window(wm, wm->focused_window_id, 0); // Super+Alt+F (fullfullscreen)
@@ -250,6 +250,14 @@ void keyboard_event(my_wm_t* wm, unsigned internal_id, unsigned press, unsigned 
 			execl("/usr/local/bin/xterm", "/usr/local/bin/xterm", NULL);
 			exit(1);
 		}
+	}
+
+	if (press && super && !alt && key == 107) { // Super+PrtSc (screenshot of selection to clipboard)
+		system("scrot -sf '/tmp/screenshot-selection-aquabsd-%F-%T.png' -e 'xclip -selection clipboard -target image/png -i $f && rm $f' &");
+	}
+
+	if (press && super && alt && key == 107) { // Super+Alt+PrtSc (screenshot of window to clipboard)
+		system("scrot -u '/tmp/screenshot-selection-aquabsd-$wx$h-%F-%T.png' -e 'xclip -selection clipboard -target image/png -i $f && rm $f' &");
 	}
 }
 
@@ -534,7 +542,7 @@ static void render_window(my_wm_t* wm, unsigned window_id, float delta) {
 	window->visual_shadow_y_offset += (y_offset - window->visual_shadow_y_offset) * delta * 10;
 
 	glUniform1f(wm->shadow_depth_uniform, depth);
-	glUniform2f(wm->shadow_position_uniform, x, y + window->visual_shadow_y_offset / 2);
+	glUniform2f(wm->shadow_position_uniform, x, y /* + window->visual_shadow_y_offset / 2 */);
 	glUniform2f(wm->shadow_size_uniform, width, height);
 
 	glBindVertexArray(wm->shadow_vao);
@@ -673,6 +681,9 @@ int main(int argc, char* argv[]) {
 
 		"	float dx = (2 * abs(map_position.x) - size.x + spread.x / 8) / spread.x;"
 		"	float dy = (2 * abs(map_position.y) - size.y + spread.y / 8) / spread.y;"
+
+		"	if (map_position.y > 0) dy *= 1.5;"
+		"	if (map_position.y < 0) dy /= 1.2;"
 
 		"	dx = clamp(dx, 0, 1);"
 		"	dy = clamp(dy, 0, 1);"
