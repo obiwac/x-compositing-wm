@@ -19,7 +19,7 @@ I may or may not end up updating this with new features, but I welcome any pull 
 On Linux or *BSD or whatever, compile with:
 
 ```sh
-$ cc -Isrc -I/usr/local/include -L/usr/local/lib -lX11 -lGL -lGLEW -lXcomposite -lXfixes -lXinerama -lm src/main.c -o x-compositing-wm
+$ cc src/main.c -Isrc -I/usr/local/include -L/usr/local/lib -lX11 -lGL -lGLEW -lXcomposite -lXfixes -lXinerama -lm -o x-compositing-wm
 ```
 
 This creates an `x-compositing-wm` executable which you can put anywhere really (like `/usr/local/bin/` or `~/.local/bin/` or whatever).
