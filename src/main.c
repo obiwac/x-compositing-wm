@@ -246,10 +246,12 @@ void keyboard_event(my_wm_t* wm, unsigned internal_id, unsigned press, unsigned 
 	}
 
 	if (press && super &&  key == 28) { // Super+T (terminal)
-		if (!fork()) {
+		/*if (!fork()) {
 			execl("/usr/local/bin/xterm", "/usr/local/bin/xterm", NULL);
 			exit(1);
-		}
+		}*/
+
+		system("xterm &");
 	}
 }
 
