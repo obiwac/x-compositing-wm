@@ -213,6 +213,8 @@ void new_wm(wm_t* wm) {
 	XGrabKey(wm->display, XKeysymToKeycode(wm->display, XStringToKeysym("t")), Mod4Mask, wm->root_window, 0, GrabModeAsync, GrabModeAsync);
 	XGrabKey(wm->display, XKeysymToKeycode(wm->display, XStringToKeysym("v")), Mod4Mask, wm->root_window, 0, GrabModeAsync, GrabModeAsync);
 	XGrabKey(wm->display, XKeysymToKeycode(wm->display, XStringToKeysym("r")), Mod4Mask, wm->root_window, 0, GrabModeAsync, GrabModeAsync);
+	XGrabKey(wm->display, XKeysymToKeycode(wm->display, XK_Print) /* PrtSc */, Mod4Mask | Mod1Mask, wm->root_window, 0, GrabModeAsync, GrabModeAsync);
+	XGrabKey(wm->display, XKeysymToKeycode(wm->display, XK_Print) /* PrtSc */, Mod4Mask, wm->root_window, 0, GrabModeAsync, GrabModeAsync);
 
 	// setup our atoms (explained in more detail in the 'wm_t' struct)
 	// we also need to specify which atoms are supported in '_NET_SUPPORTED'
