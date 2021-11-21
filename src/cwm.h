@@ -44,6 +44,8 @@ typedef struct {
 	Window output_window;
 
 	GLXContext glx_context;
+
+	int glx_config_count;
 	GLXFBConfig* glx_configs;
 
 	glXBindTexImageEXT_t glXBindTexImageEXT;
@@ -123,6 +125,12 @@ void new_cwm(cwm_t* cwm, wm_t* wm) {
 	const int config_attributes[] = {
 		GLX_BIND_TO_TEXTURE_RGBA_EXT, 1,
 		GLX_BIND_TO_TEXTURE_TARGETS_EXT, GLX_TEXTURE_2D_BIT_EXT,
+		GLX_RENDER_TYPE, GLX_RGBA_BIT,
+		GLX_DRAWABLE_TYPE, GLX_PIXMAP_BIT,
+		GLX_X_VISUAL_TYPE, GLX_TRUE_COLOR,
+		GLX_X_RENDERABLE, 1,
+		GLX_FRAMEBUFFER_SRGB_CAPABLE_EXT, (GLint) GLX_DONT_CARE,
+		GLX_BUFFER_SIZE, 32,
 //		GLX_SAMPLE_BUFFERS, 1,
 //		GLX_SAMPLES, 4,
 		GLX_DOUBLEBUFFER, 1,
@@ -130,11 +138,11 @@ void new_cwm(cwm_t* cwm, wm_t* wm) {
 		GLX_GREEN_SIZE, 8,
 		GLX_BLUE_SIZE, 8,
 		GLX_ALPHA_SIZE, 8,
+		GLX_STENCIL_SIZE, 0,
 		GLX_DEPTH_SIZE, 16, 0
 	};
 
-	__attribute__((unused)) int n_elements;
-	cwm->glx_configs = glXChooseFBConfig(wm->display, wm->screen, config_attributes, &n_elements);
+	cwm->glx_configs = glXChooseFBConfig(wm->display, wm->screen, config_attributes, &cwm->glx_config_count);
 	if (!cwm->glx_configs) wm_error(wm, "Failed to get GLX frame buffer configurations");
 
 	// create our OpenGL context
@@ -241,6 +249,11 @@ void cwm_destroy_event(cwm_t* cwm, unsigned window_index) {
 
 // rendering functions
 
+#define glXGetFBConfigAttribChecked(a, b, attr, c) \
+	if (glXGetFBConfigAttrib((a), (b), (attr), (c))) { \
+		fprintf(stderr, "WARNING Cannot get FBConfig attribute " #attr "\n"); \
+	}
+
 void cwm_bind_window_texture(cwm_t* cwm, unsigned window_index) {
 	wm_window_t* window = &cwm->wm->windows[window_index];
 	cwm_window_internal_t* window_internal = cwm_get_window_internal(cwm, window);
@@ -258,13 +271,39 @@ void cwm_bind_window_texture(cwm_t* cwm, unsigned window_index) {
 	// update the window's pixmap
 
 	if (!window_internal->pixmap) {
+		XWindowAttributes attribs;
+		XGetWindowAttributes(cwm->wm->display, window->window, &attribs);
+
+		int format;
+		GLXFBConfig config;
+
+		for (int i = 0; i < cwm->glx_config_count; i++) {
+			config = cwm->glx_configs[i];
+
+			int has_alpha;
+			glXGetFBConfigAttribChecked(cwm->wm->display, config, GLX_BIND_TO_TEXTURE_RGBA_EXT, &has_alpha);
+
+			XVisualInfo* visual = glXGetVisualFromFBConfig(cwm->wm->display, config);
+			int visual_depth = visual->depth;
+			free(visual);
+
+			if (attribs.depth != visual_depth) {
+				continue;
+			}
+
+			// found the config we want, break
+
+			format = has_alpha ? GLX_TEXTURE_FORMAT_RGBA_EXT : GLX_TEXTURE_FORMAT_RGB_EXT;
+			break;
+		}
+
 		const int pixmap_attributes[] = {
 			GLX_TEXTURE_TARGET_EXT, GLX_TEXTURE_2D_EXT,
-			GLX_TEXTURE_FORMAT_EXT, GLX_TEXTURE_FORMAT_RGB_EXT, 0 // GLX_TEXTURE_FORMAT_RGBA_EXT
+			GLX_TEXTURE_FORMAT_EXT, format, 0 // GLX_TEXTURE_FORMAT_RGB_EXT
 		};
 
 		Pixmap x_pixmap = XCompositeNameWindowPixmap(cwm->wm->display, window->window);
-		window_internal->pixmap = glXCreatePixmap(cwm->wm->display, cwm->glx_configs[0], x_pixmap, pixmap_attributes);
+		window_internal->pixmap = glXCreatePixmap(cwm->wm->display, config, x_pixmap, pixmap_attributes);
 
 		XFreePixmap(cwm->wm->display, x_pixmap);
 	}
