@@ -255,7 +255,7 @@ void keyboard_event(my_wm_t* wm, unsigned internal_id, unsigned press, unsigned 
 	}
 
 	if (press && super && !alt && key == 107) { // Super+PrtSc (screenshot of selection to clipboard)
-		system("scrot -sf '/tmp/screenshot-selection-aquabsd-%F-%T.png' -e 'xclip -selection clipboard -target image/png -i $f && rm $f' &");
+		system("scrot -fs '/tmp/screenshot-selection-aquabsd-%F-%T.png' -e 'xclip -selection clipboard -target image/png -i $f && rm $f' &");
 	}
 
 	if (press && super && alt && key == 107) { // Super+Alt+PrtSc (screenshot of window to clipboard)
