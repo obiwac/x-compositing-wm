@@ -623,7 +623,7 @@ int main(int argc, char* argv[]) {
 
 		"void main(void) {"
 		"   vec4 colour = texture(texture_sampler, local_position * vec2(1.0, -1.0) + vec2(0.5));"
-		"	float alpha = opacity /* * (1.0 - colour.a) */;"
+		"	float alpha = opacity * (1.0 - colour.a);"
 
 		"	fragment_colour = vec4(colour.rgb, alpha);"
 		"}";
