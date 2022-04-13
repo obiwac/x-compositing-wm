@@ -53,6 +53,7 @@ typedef struct {
 } cwm_t;
 
 typedef struct {
+	Pixmap x_pixmap;
 	GLXPixmap pixmap;
 } cwm_window_internal_t;
 
@@ -227,12 +228,11 @@ void cwm_create_event(cwm_t* cwm, unsigned window_index) {
 	cwm_window_internal_t* window_internal = cwm_get_window_internal(cwm, window);
 }
 
-void cwm_modify_event(cwm_t* cwm, unsigned window_index) {
-	wm_window_t* window = &cwm->wm->windows[window_index];
-	cwm_window_internal_t* window_internal = cwm_get_window_internal(cwm, window);
-
-	// check to see if we already have a pixmap
-	// delete it if so since we're likely gonna need to update it
+static inline void __cwm_free_pixmap(cwm_t* cwm, cwm_window_internal_t* window_internal) {
+	if (window_internal->x_pixmap) {
+		XFreePixmap(cwm->wm->display, window_internal->x_pixmap);
+		window_internal->x_pixmap = 0;
+	}
 
 	if (window_internal->pixmap) {
 		glXDestroyPixmap(cwm->wm->display, window_internal->pixmap);
@@ -240,10 +240,20 @@ void cwm_modify_event(cwm_t* cwm, unsigned window_index) {
 	}
 }
 
+void cwm_modify_event(cwm_t* cwm, unsigned window_index) {
+	wm_window_t* window = &cwm->wm->windows[window_index];
+	cwm_window_internal_t* window_internal = cwm_get_window_internal(cwm, window);
+
+	// delete pixmap since we're likely gonna need to update it
+
+	__cwm_free_pixmap(cwm, window_internal);
+}
+
 void cwm_destroy_event(cwm_t* cwm, unsigned window_index) {
 	wm_window_t* window = &cwm->wm->windows[window_index];
 	cwm_window_internal_t* window_internal = cwm_get_window_internal(cwm, window);
 
+	__cwm_free_pixmap(cwm, window_internal);
 	free(window_internal);
 }
 
@@ -302,10 +312,8 @@ void cwm_bind_window_texture(cwm_t* cwm, unsigned window_index) {
 			GLX_TEXTURE_FORMAT_EXT, format, 0 // GLX_TEXTURE_FORMAT_RGB_EXT
 		};
 
-		Pixmap x_pixmap = XCompositeNameWindowPixmap(cwm->wm->display, window->window);
-		window_internal->pixmap = glXCreatePixmap(cwm->wm->display, config, x_pixmap, pixmap_attributes);
-
-		XFreePixmap(cwm->wm->display, x_pixmap);
+		window_internal->x_pixmap = XCompositeNameWindowPixmap(cwm->wm->display, window->window);
+		window_internal->pixmap = glXCreatePixmap(cwm->wm->display, config, window_internal->x_pixmap, pixmap_attributes);
 	}
 
 	cwm->glXBindTexImageEXT(cwm->wm->display, window_internal->pixmap, GLX_FRONT_LEFT_EXT, NULL);
